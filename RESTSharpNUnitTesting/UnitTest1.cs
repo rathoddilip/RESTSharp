@@ -27,7 +27,9 @@ namespace RESTSharpNUnitTesting
             IRestResponse response = client.Execute(request);
             return response;
         }
-       
+        /// <summary>
+        /// TC:1 retrieves number of people in file
+        /// </summary>
         [Test]
         public void Return_GivenEmployeeList()
         {
