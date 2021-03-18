@@ -79,5 +79,19 @@ namespace RESTSharpNUnitTesting
             Assert.AreEqual("50000", dataresponse.Salary);
             Console.WriteLine(response.Content);
         }
+        /// <summary>
+        /// TC5:Delete the person details
+        /// </summary>
+        [Test]
+        public void GivenEmployeeIDOnDeleteShouldReturnsucessFulstatus()
+        {
+            RestRequest request = new RestRequest("/Employee/7", Method.DELETE);
+
+
+            IRestResponse response = client.Execute(request);
+            Assert.AreEqual(response.StatusCode, HttpStatusCode.OK);
+            Console.WriteLine(response.Content);
+
+        }
     }
 }
