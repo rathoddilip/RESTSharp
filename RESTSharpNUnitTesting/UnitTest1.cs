@@ -59,6 +59,25 @@ namespace RESTSharpNUnitTesting
             Assert.AreEqual("Pradip", dataresponse.Name);
             Assert.AreEqual("20000", dataresponse.Salary);
         }
-        
+        /// <summary>
+        /// TC3: Edit the details of perticular employee 
+        /// </summary>
+        [Test]
+        public void GivenEmployeeOnUpdateReturnUpdateemployee()
+        {
+            RestRequest request = new RestRequest("/Employee/9", Method.PUT);
+            JObject jObject = new JObject();
+            jObject.Add("Name", "Ganesh");
+            jObject.Add("Salary", 50000);
+
+            request.AddParameter("application/json", jObject, ParameterType.RequestBody);
+
+            IRestResponse response = client.Execute(request);
+            Assert.AreEqual(response.StatusCode, HttpStatusCode.OK);
+            Employee dataresponse = JsonConvert.DeserializeObject<Employee>(response.Content);
+            Assert.AreEqual("Ganesh", dataresponse.Name);
+            Assert.AreEqual("50000", dataresponse.Salary);
+            Console.WriteLine(response.Content);
+        }
     }
 }
