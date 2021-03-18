@@ -1,6 +1,8 @@
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using RestSharp;
+using System;
 using System.Collections.Generic;
 using System.Net;
 
@@ -9,8 +11,8 @@ namespace RESTSharpNUnitTesting
     public class Employee
     {
         public int id { get; set; }
-        public string name { get; set; }
-        public string salary { get; set; }
+        public string Name { get; set; }
+        public string Salary { get; set; }
     }
     public class Tests
     {
@@ -31,13 +33,32 @@ namespace RESTSharpNUnitTesting
         /// TC:1 retrieves number of people in file
         /// </summary>
         [Test]
-        public void Return_GivenEmployeeList()
+        public void ReturnGivenEmployeeList()
         {
             IRestResponse response = getEmpoylee();
             Assert.AreEqual(response.StatusCode, HttpStatusCode.OK);
             List<Employee> list = JsonConvert.DeserializeObject<List<Employee>>(response.Content);
-            Assert.AreEqual(8, list.Count);
+            Assert.AreEqual(10, list.Count);
 
         }
+        /// <summary>
+        /// TC2: Add employee
+        /// </summary>
+        [Test]
+        public void GivenEmployeeOnpostShouldreturnAddEmployee()
+        {
+           RestRequest request = new RestRequest("/Employee", Method.POST);
+            JObject jObject = new JObject();
+            jObject.Add("Name", "Pradip");
+            jObject.Add("Salary", 20000);
+            request.AddParameter("application/json", jObject, ParameterType.RequestBody);
+
+            IRestResponse response = client.Execute(request);
+            Assert.AreEqual(response.StatusCode, HttpStatusCode.Created);
+            Employee dataresponse = JsonConvert.DeserializeObject<Employee>(response.Content);
+            Assert.AreEqual("Pradip", dataresponse.Name);
+            Assert.AreEqual("20000", dataresponse.Salary);
+        }
+        
     }
 }
